@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blessed Church</title>
+
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #111;
+  --card: #f4f4f4;
+  --primary: #0d1b2a;
+}
+
+.dark {
+  --bg: #0d1b2a;
+  --text: #ffffff;
+  --card: #1b263b;
+  --primary: #ffcc00;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: var(--primary);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+/* HERO VIDEO */
+.hero {
+  height: 90vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.hero video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+
+.hero-content {
+  position: relative;
+  animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  background: #ffcc00;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* SECTIONS */
+section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+/* SLIDER */
+.slider {
+  position: relative;
+  width: 90%;
+  max-width: 700px;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slides img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+}
+
+/* CARDS */
+.card {
+  background: var(--card);
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  display: inline-block;
+  width: 250px;
+}
+
+/* FORM */
+input, textarea {
+  width: 80%;
+  padding: 10px;
+  margin: 10px;
+}
+
+/* FOOTER */
+footer {
+  background: var(--primary);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+  <div><b>Blessed Church</b></div>
+  <div>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button onclick="toggleMode()">🌙</button>
+</nav>
+
+<!-- HERO VIDEO -->
+<div class="hero" id="home">
+  <video autoplay muted loop>
+    <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
+  </video>
+
+  <div class="hero-content">
+    <h1>Welcome to Blessed Church</h1>
+    <p>Faith • Hope • Love</p>
+    <button class="btn">Join Us</button>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2>About Us</h2>
+  <p>We are a modern Christian community spreading love, peace, and faith.</p>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <h2>Our Services</h2>
+
+  <div class="card">
+    <h3>Saturday Worship</h3>
+    <p>10:00 AM - 1:00 PM</p>
+  </div>
+
+  <div class="card">
+    <h3>Bible Study</h3>
+    <p>Friday 6:00 PM</p>
+  </div>
+
+  <div class="card">
+    <h3>Prayer Night</h3>
+    <p>Wednesday 7:00 PM</p>
+  </div>
+</section>
+
+<!-- GALLERY SLIDER -->
+<section id="gallery">
+  <h2>Church Gallery</h2>
+
+  <div class="slider">
+    <div class="slides" id="slides">
+      <img src="https://images.unsplash.com/photo-1507692049790-de58290a4334">
+      <img src="https://images.unsplash.com/photo-1508599589920-14cfa1c1fe4d">
+      <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df">
+    </div>
+  </div>
+</section>
+
+<!-- PRAYER FORM -->
+<section>
+  <h2>Prayer Request</h2>
+  <form onsubmit="sendPrayer(event)">
+    <input type="text" placeholder="Your Name" required><br>
+    <textarea rows="5" placeholder="Your Prayer Request" required></textarea><br>
+    <button class="btn">Send</button>
+  </form>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2>Contact & Location</h2>
+  <p>Email: blessedchurch@email.com</p>
+
+  <iframe 
+    src="https://www.google.com/maps/embed?pb=!1m18..."
+    width="90%" height="300" style="border:0;">
+  </iframe>
+</section>
+
+<footer>
+  <p>© 2026 Blessed Church | All Rights Reserved</p>
+</footer>
+
+<script>
+
+/* DARK MODE */
+function toggleMode() {
+  document.body.classList.toggle("dark");
+}
+
+/* PRAYER FORM */
+function sendPrayer(e) {
+  e.preventDefault();
+  alert("🙏 Your prayer request has been sent!");
+}
+
+/* IMAGE SLIDER */
+let index = 0;
+const slides = document.getElementById("slides");
+const total = slides.children.length;
+
+setInterval(() => {
+  index = (index + 1) % total;
+  slides.style.transform = "translateX(" + (-index * 100) + "%)";
+}, 3000);
+
+</script>
+
+</body>
+</html>
