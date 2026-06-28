@@ -1,31 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AutoSavari</title>
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-}
-
 body{
+font-family:Arial;
+margin:0;
 background:#0b1220;
 color:white;
 }
 
 header{
+text-align:center;
 padding:20px;
 background:#111827;
-text-align:center;
 }
 
 section{
@@ -34,69 +26,37 @@ text-align:center;
 }
 
 .box{
-
 background:#111827;
-
-max-width:500px;
-
-margin:auto;
-
 padding:20px;
-
+margin:auto;
+max-width:500px;
 border-radius:15px;
-
 }
 
 input{
-
 width:90%;
-
 padding:12px;
-
-margin:10px;
-
-border:none;
-
+margin:8px;
 border-radius:10px;
-
+border:none;
 }
 
 button{
-
 padding:12px 20px;
-
 background:#facc15;
-
 border:none;
-
 border-radius:10px;
-
 font-weight:bold;
-
 cursor:pointer;
-
 margin:5px;
-
 }
 
 .card{
-
-background:#111827;
-
-padding:15px;
-
+background:#1f2937;
 margin:10px;
-
+padding:10px;
 border-radius:10px;
-
 }
-
-iframe{
-
-border-radius:15px;
-
-}
-
 </style>
 
 </head>
@@ -104,446 +64,149 @@ border-radius:15px;
 <body>
 
 <header>
-
-<h1>
-🚕 AutoSavari
-</h1>
-
-<p>
-Cheap • Fast • Local
-</p>
-
+<h1>🚕 AutoSavari</h1>
+<p>Cheap • Fast • Local</p>
 </header>
 
-
+<!-- LOGIN -->
 <section>
-
 <div class="box">
+<h2>Login / Signup</h2>
 
-<h2>
-Login
-</h2>
-
-<input
-id="email"
-placeholder="autosavari@autosaywa.com">
-
-<input
-id="pass"
-type="password"
-placeholder="Password">
+<input id="email" placeholder="Email">
+<input id="pass" type="password" placeholder="Password">
 
 <br>
 
-<button onclick="signup()">
-Sign Up
-</button>
-
-<button onclick="login()">
-Login
-</button>
-
+<button onclick="signup()">Sign Up</button>
+<button onclick="login()">Login</button>
 </div>
-
 </section>
 
-
-
+<!-- BOOKING -->
 <section>
-
 <div class="box">
+<h2>Book Ride</h2>
 
-<h2>
-Book Ride
-</h2>
-
-<input
-id="pickup"
-placeholder="Pickup">
-
-<input
-id="drop"
-placeholder="Drop">
+<input id="pickup" placeholder="Pickup Location">
+<input id="drop" placeholder="Drop Location">
 
 <br>
 
-<button onclick="bookRide()">
-
-Book Auto
-
-</button>
-
+<button onclick="bookRide()">Book Auto</button>
 </div>
-
 </section>
 
-
+<!-- MAP -->
 <section>
-
-<h2>
-📍 Sindhuli Marta Map
-</h2>
+<h2>📍 Sindhuli Marta Map</h2>
 
 <iframe
-
 width="90%"
-
-height="350"
-
+height="300"
+style="border-radius:15px"
 loading="lazy"
-
 allowfullscreen
-
 src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAgX_B7ED7V_F2mn9nuJtqxKgCUFjhm1iM&q=Marta,Sindhuli,Nepal">
-
 </iframe>
-
 </section>
 
-
+<!-- BOOKINGS -->
 <section>
-
-<h2>
-Bookings
-</h2>
-
-<div id="list">
-
-</div>
-
+<h2>Bookings</h2>
+<div id="list"></div>
 </section>
 
-
-
+<!-- FIREBASE -->
 <script type="module">
 
-import {
-initializeApp
-}
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-from
-
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-
-
-import {
-
-getAuth,
-
-createUserWithEmailAndPassword,
-
-signInWithEmailAndPassword
-
-}
-
-from
-
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-
-import {
-
-getFirestore,
-
-collection,
-
-addDoc,
-
-getDocs
-
-}
-
-from
-
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-
-
-const firebaseConfig={
-
-apiKey:
-"AIzaSyDzFZhn3wnVDyWFlHfBCUE0PoTGq2jug3k",
-
-authDomain:
-"asia-south1-34519.firebaseapp.com",
-
-projectId:
-"asia-south1-34519",
-
-storageBucket:
-"asia-south1-34519.firebasestorage.app",
-
-messagingSenderId:
-"180733727705",
-
-appId:
-"1:180733727705:web:778e799b93b42298b33fc8"
-
+const firebaseConfig = {
+apiKey: "AIzaSyDzFZhn3wnVDyWFlHfBCUE0PoTGq2jug3k",
+authDomain: "asia-south1-34519.firebaseapp.com",
+projectId: "asia-south1-34519",
+storageBucket: "asia-south1-34519.firebasestorage.app",
+messagingSenderId: "180733727705",
+appId: "1:180733727705:web:d35bea8593225078b33fc8"
 };
 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-const app=
-initializeApp(
-firebaseConfig
-);
-
-const auth=
-getAuth(app);
-
-const db=
-getFirestore(app);
-
-
-
-window.signup=
-async function(){
-
-let email=
-emailInput();
-
-let pass=
-passInput();
+// SIGNUP
+window.signup = async function(){
+let email = document.getElementById("email").value;
+let pass = document.getElementById("pass").value;
 
 try{
-
-await createUserWithEmailAndPassword(
-auth,
-email,
-pass
-);
-
-alert(
-"Signup Success"
-);
-
+await createUserWithEmailAndPassword(auth,email,pass);
+alert("Signup Success 🚕");
+}catch(e){
+alert(e.message);
+}
 }
 
-catch(e){
-
-alert(
-e.message
-);
-
-}
-
-};
-
-
-
-window.login=
-async function(){
-
-let email=
-emailInput();
-
-let pass=
-passInput();
+// LOGIN
+window.login = async function(){
+let email = document.getElementById("email").value;
+let pass = document.getElementById("pass").value;
 
 try{
-
-await signInWithEmailAndPassword(
-auth,
-email,
-pass
-);
-
-alert(
-"Login Success"
-);
-
+await signInWithEmailAndPassword(auth,email,pass);
+alert("Login Success 🚕");
+}catch(e){
+alert(e.message);
+}
 }
 
-catch(e){
+// BOOK RIDE
+window.bookRide = async function(){
 
-alert(
-e.message
-);
+let pickup = document.getElementById("pickup").value;
+let drop = document.getElementById("drop").value;
 
-}
-
-};
-
-
-
-window.bookRide=
-async function(){
-
-let pickup=
-document
-.getElementById(
-"pickup"
-)
-.value;
-
-let drop=
-document
-.getElementById(
-"drop"
-)
-.value;
-
-if(
-pickup==""||
-drop==""
-){
-
-alert(
-"Fill all"
-);
-
+if(pickup=="" || drop==""){
+alert("Fill all fields");
 return;
-
 }
 
-
-await addDoc(
-
-collection(
-db,
-"rides"
-),
-
-{
-
+await addDoc(collection(db,"rides"),{
 pickup,
-
 drop,
+time: Date.now()
+});
 
-time:
-Date.now()
-
+alert("Ride Booked 🚕");
+loadRides();
 }
 
-);
+// LOAD RIDES
+async function loadRides(){
 
-alert(
-"Ride Booked 🚕"
-);
+let snap = await getDocs(collection(db,"rides"));
 
-load();
+let html = "";
 
-};
+snap.forEach(doc=>{
+let d = doc.data();
 
-
-
-async function load(){
-
-let snap=
-
-await getDocs(
-
-collection(
-db,
-"rides"
-)
-
-);
-
-let html="";
-
-snap.forEach(
-
-doc=>{
-
-let d=
-doc.data();
-
-html+=`
-
+html += `
 <div class="card">
-
-🚕
-${d.pickup}
-
-→
-
-${d.drop}
-
+🚕 ${d.pickup} → ${d.drop}
 </div>
-
 `;
+});
 
+document.getElementById("list").innerHTML = html;
 }
 
-);
-
-document
-.getElementById(
-"list"
-)
-.innerHTML=
-
-html;
-
-}
-
-
-
-function emailInput(){
-
-return document
-.getElementById(
-"email"
-)
-.value;
-
-}
-
-function passInput(){
-
-return document
-.getElementById(
-"pass"
-)
-.value;
-
-}
-
-load();
+loadRides();
 
 </script>
-<script type="module">
 
-import {
-initializeApp
-}
-
-from
-
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-
-const firebaseConfig={
-
-apiKey:
-"AIzaSyDzFZhn3wnVDyWFlHfBCUE0PoTGq2jug3k",
-
-authDomain:
-"asia-south1-34519.firebaseapp.com",
-
-projectId:
-"asia-south1-34519",
-
-storageBucket:
-"asia-south1-34519.firebasestorage.app",
-
-messagingSenderId:
-"180733727705",
-
-appId:
-"1:180733727705:web:d35bea8593225078b33fc8"
-
-};
-
-const app=
-initializeApp(
-firebaseConfig
-);
-
-console.log(
-"Firebase Connected"
-);
-
-</script>
 </body>
-
 </html>
